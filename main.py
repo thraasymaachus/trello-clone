@@ -1,12 +1,5 @@
 from class_definitions import *
 
-
-# Helper functions
-def retrieveKey():
-    return open(".config", "r").readline()
-
-
-
 # Create presenter and view components
 
 agent = Presenter()
@@ -40,10 +33,11 @@ while (1):
     print(instruction)
     # OUTPUT: my_board.add_child(List(title='To Do'))
 
-    eval(instruction, {'__builtins__':None}, ALLOWABLE_OBJ)
+    try:
+        eval(instruction, {'__builtins__':None}, ALLOWABLE_OBJ)
+    except:
+        print("Execution failed")
 
     view.view_board(my_board)
     
     time.sleep(1) # Ensure no excess API calls
-    
-    break
