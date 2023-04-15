@@ -1,8 +1,20 @@
 from class_definitions import *
+import sys
+
+
+# Helper functions
+def retrieveKey():
+    return open(".config", "r").readline()
+
+
+# Determine allowable methods for GPT
 
 ALLOWABLE_METHODS = {'newModel': Model,
                      'newList': List,
                      'newCard': Card}
+
+
+# Create presenter and view components
 
 agent = Presenter()
 view = View()
@@ -11,12 +23,6 @@ view = View()
 
 myBoard = Board('My Board')
 
-for i in range(3):
-    myBoard.add_child(List(f"List {i}"))
-
-print(myBoard.children)
-
-"""
 # Input loop
 while (1):
     
@@ -27,8 +33,7 @@ while (1):
             eval(instruct, {__builtins__:None}, ALLOWABLE_METHODS)
         except NameError:
             print("Error: Agent attempting to use disallowed method. Aborting")
-            # Abort using sys.exit()
+            sys.exit()
         except:
             print(f'Failed while trying to carry out instruction: {instruct}')
 
-"""
