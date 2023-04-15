@@ -1,4 +1,9 @@
 import uuid
+import openai
+import time
+
+LLM_FINE_TUNE = "python class Model has attributes id, title, children[], & functions add_child(child), rm_child(child). class Board and List derive from Model. class Card has attributes type, title, content. Assume there is a board called my_board. Convert the following input to a single python statement that uses the provided information, without python builtins:\n"
+API_KEY = "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 class Model:
     def __init__(self, title) -> None:
@@ -65,7 +70,7 @@ class View:
         
 class Presenter:
     def __init__(self) -> None:
-        pass
+        openai.api_key = API_KEY
 
     def take_input(self):
         query = input()
@@ -74,4 +79,17 @@ class Presenter:
         return instructions
 
     def gpt_parse(self, query):
-        pass
+        reply = openai.ChatCompletion.create( # Need to use ChatCompletion if using gpt-X.
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": LLM_FINE_TUNE},
+                {"role": "user", "content": query},
+            ],
+            temperature=0
+        )
+
+        #print(reply)
+        try:
+            return reply['choices'][0]['message']['content']
+        except:
+            print(f"couldn't return output. It was type: {type(reply)}")

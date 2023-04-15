@@ -1,10 +1,11 @@
 from class_definitions import *
-import sys
 
 
 # Helper functions
 def retrieveKey():
     return open(".config", "r").readline()
+
+
 
 # Create presenter and view components
 
@@ -14,6 +15,7 @@ view = View()
 # Begin 
 
 boards = {}
+instructions = []
 
 # Create and store a board
 my_board = Board("My Board")
@@ -28,38 +30,20 @@ ALLOWABLE_OBJ = {'view': view,
                  'Card': Card}
 
 
-my_board.add_child(List("List title 1"))
-my_board.add_child(List("List title 2"))
-my_board.add_child(List("List title 4"))
-
-view.view_board(my_board)
-
-
-print("\n")
-
-
-third = List("List title 3")
-third_id = third.id
-
-#third.add_child(Card("Agenda", "Finish programming this thing"))
-my_board.add_child(third)
-third.add_child(Card("Agenda", "Finish programming this thing"))
-view.view_list(my_board.get_child_by_id(third_id))
-
-
-"""
 # Input loop
 while (1):
 
-
     
+    instruction = agent.take_input().strip().translate({ord(i): None for i in '`'})
+    # INPUT: Make a new list on my board called 'To Do'
 
+    print(instruction)
+    # OUTPUT: my_board.add_child(List(title='To Do'))
+
+    eval(instruction, {'__builtins__':None}, ALLOWABLE_OBJ)
+
+    view.view_board(my_board)
     
-    #instructions = agent.take_input()
-    instructions = []
-    instructions.append(input())
-
-    for instruct in instructions:
-        eval(instruct, {'__builtins__':None}, ALLOWABLE_OBJ)
-    """
-
+    time.sleep(1) # Ensure no excess API calls
+    
+    break
