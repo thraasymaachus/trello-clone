@@ -1,8 +1,11 @@
+import uuid
+
 class Model:
     def __init__(self, title) -> None:
+        self.id = uuid.uuid4()
         self.title = title
         self.children = []
-        self.activity = [] # Historical activities associated with the object
+        self.activity = []
 
     def add_child(self, child):
         self.children.append(child)
@@ -13,6 +16,12 @@ class Model:
     def log_activity(self, child):
         pass
 
+    def get_child_by_id(self, child_id):
+        for child in self.children:
+            if child.id == child_id:
+                return child
+        return None
+
 
 class Board(Model):
     type = 'Board'
@@ -20,19 +29,19 @@ class Board(Model):
     def __init__(self, title) -> None:
         super().__init__(title)
 
-
-class List(Board):
+class List(Model):
     type = 'List'
 
     def __init__(self, title) -> None:
         super().__init__(title)
 
-
 class Card:
+    type = 'Card'
+
     def __init__(self, title, content):
+        self.id = uuid.uuid4()
         self.title = title
         self.content = content
-
 
 class View:
     def __init__(self) -> None:
@@ -40,17 +49,20 @@ class View:
 
     def view_board(self, board):
         print(board.title)
-        print("Show Board")
+        print("\n")
+        for list in board.children:
+            print(list.title)
 
     def view_list(self, list):
         print(list.title)
-        print("Show List")
+        print("\n")
+        for card in list.children:
+            print(list.title)
 
     def view_card(self, card):
         print(card.title)
-        print("Show Card")
+        print(card.content)
         
-
 class Presenter:
     def __init__(self) -> None:
         pass
