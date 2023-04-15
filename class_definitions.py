@@ -49,15 +49,15 @@ class View:
 
     def view_board(self, board):
         print(board.title)
-        print("\n")
+
         for list in board.children:
             print(list.title)
 
     def view_list(self, list):
         print(list.title)
-        print("\n")
+
         for card in list.children:
-            print(list.title)
+            print(card.title)
 
     def view_card(self, card):
         print(card.title)
